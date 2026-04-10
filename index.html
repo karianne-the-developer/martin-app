@@ -151,10 +151,10 @@
     <div class="card-title">🎵 Månedssang</div>
     <div class="song-inner">
       <div class="song-notes">🎶🐦🎶</div>
-      <div class="song-name">Fuglevise</div>
-      <div class="song-author">Thorbjørn Egner</div>
+      <div class="song-name" id="songName">Fuglevise</div>
+      <div class="song-author" id="songAuthor">Thorbjørn Egner</div>
     </div>
-    <a class="youtube-btn" href="https://www.youtube.com/results?search_query=Fuglevise+Thorbjørn+Egner+barnehage" target="_blank" rel="noopener">
+    <a class="youtube-btn" id="youtubeBtn" href="#" target="_blank" rel="noopener">
       <span class="yt-icon">▶️</span> Se og hør på YouTube!
     </a>
   </div>
@@ -171,6 +171,16 @@ const h = today.getHours();
 const greet = h < 10 ? 'God morgen, Martin! ☀️' : h < 14 ? 'Hei, Martin! 🌞' : 'God ettermiddag, Martin! 🌤️';
 document.getElementById('greeting').textContent = greet;
 document.getElementById('dayStr').textContent = dayNo[today.getDay()] + ' ' + today.getDate() + '. ' + monthNo[today.getMonth()];
+
+// SONG – byt ut tittel og artist her når månedssangen endres
+const song = {
+  title: 'Fuglevise',
+  artist: 'Thorbjørn Egner',
+};
+document.getElementById('songName').textContent = song.title;
+document.getElementById('songAuthor').textContent = song.artist;
+const ytQuery = encodeURIComponent(song.title + ' ' + song.artist + ' barnehage');
+document.getElementById('youtubeBtn').href = 'https://www.youtube.com/results?search_query=' + ytQuery;
 
 // CLOTHING PROFILES
 const clothingProfiles = {
