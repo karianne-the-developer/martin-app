@@ -7,12 +7,12 @@
 <meta name="apple-mobile-web-app-title" content="Martins dag">
 <title>Martins dag 🐻</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap');
+  
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
   body {
-    font-family: 'Nunito', -apple-system, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
     background: linear-gradient(160deg, #fff9f0 0%, #f0f7ff 100%);
     min-height: 100vh;
     padding: 16px 12px 40px;
@@ -171,7 +171,7 @@
     background: white;
     color: #999;
     cursor: pointer;
-    font-family: 'Nunito', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
   .week-tab.active {
     background: #ff6b35;
@@ -217,7 +217,7 @@
   .big-btn {
     display: block;
     width: 100%;
-    font-family: 'Nunito', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-size: 20px;
     font-weight: 900;
     padding: 14px;
@@ -386,7 +386,10 @@ document.getElementById('dateStr').textContent = dayNo[today.getDay()] + ' ' + t
 // WEATHER
 async function fetchWeather() {
   try {
-    const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=59.9&longitude=10.63&current=temperature_2m,apparent_temperature,wind_speed_10m,weather_code&timezone=Europe%2FOslo');
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+    const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=59.9&longitude=10.63&current=temperature_2m,apparent_temperature,wind_speed_10m,weather_code&timezone=Europe%2FOslo', {signal: controller.signal});
+    clearTimeout(timeout);
     const d = await r.json();
     const c = d.current;
     document.getElementById('tempVal').textContent = Math.round(c.temperature_2m) + '°';
