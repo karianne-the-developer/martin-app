@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Martins dag">
+<title>Martins dag 🐻</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Nunito', -apple-system, sans-serif;
+    background: linear-gradient(160deg, #fff9f0 0%, #f0f7ff 100%);
+    min-height: 100vh;
+    padding: 16px 12px 40px;
+    color: #2a2a4a;
+  }
+
+  .app { max-width: 600px; margin: 0 auto; }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    padding: 20px 0 16px;
+  }
+  .header-bear {
+    font-size: 80px;
+    line-height: 1;
+    margin-bottom: 8px;
+    display: block;
+    animation: bounce 2s infinite;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .header-name {
+    font-size: 42px;
+    font-weight: 900;
+    color: #ff6b35;
+    text-shadow: 0 3px 0 #ff8c5a40;
+    letter-spacing: -0.5px;
+  }
+  .header-date {
+    font-size: 18px;
+    color: #888;
+    margin-top: 4px;
+    font-weight: 700;
+  }
+
+  /* CARDS */
+  .card {
+    background: white;
+    border-radius: 28px;
+    padding: 22px 20px;
+    margin-bottom: 14px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .card-icon { font-size: 32px; }
+  .card-title {
+    font-size: 22px;
+    font-weight: 900;
+    color: #2a2a4a;
+  }
+
+  /* WEATHER */
+  .weather-card { background: linear-gradient(135deg, #74b9ff, #0984e3); color: white; }
+  .weather-card .card-title { color: white; }
+  .weather-main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .weather-temp { font-size: 72px; font-weight: 900; line-height: 1; }
+  .weather-big-icon { font-size: 80px; }
+  .weather-desc { font-size: 20px; font-weight: 700; opacity: 0.9; margin-bottom: 8px; }
+  .tip-box {
+    background: rgba(255,255,255,0.25);
+    border-radius: 16px;
+    padding: 12px 16px;
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    line-height: 1.4;
+  }
+
+  /* TODAY PLAN */
+  .today-card { background: linear-gradient(135deg, #fd79a8, #e84393); }
+  .today-card .card-title { color: white; }
+  .today-card .card-icon-wrap { color: white; }
+  .today-big {
+    font-size: 22px;
+    font-weight: 900;
+    color: white;
+    line-height: 1.4;
+    background: rgba(255,255,255,0.2);
+    border-radius: 18px;
+    padding: 16px 18px;
+    margin-bottom: 10px;
+  }
+  .today-meta {
+    font-size: 16px;
+    color: rgba(255,255,255,0.85);
+    font-weight: 700;
+    padding: 0 4px;
+    line-height: 1.5;
+  }
+
+  /* WEEK PLAN */
+  .week-day {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 2px dashed #f0f0f0;
+  }
+  .week-day:last-child { border-bottom: none; }
+  .week-day.today-row {
+    background: #fff3f0;
+    border-radius: 16px;
+    padding: 12px 14px;
+    margin: 0 -4px;
+    border-bottom: none;
+  }
+  .week-day-name {
+    font-size: 15px;
+    font-weight: 900;
+    color: #ff6b35;
+    min-width: 52px;
+    padding-top: 2px;
+    flex-shrink: 0;
+  }
+  .week-day-text {
+    font-size: 17px;
+    font-weight: 700;
+    color: #333;
+    line-height: 1.4;
+  }
+  .closed-badge {
+    display: inline-block;
+    background: #ffe0e0;
+    color: #c0392b;
+    font-size: 13px;
+    font-weight: 900;
+    border-radius: 8px;
+    padding: 2px 8px;
+    margin-bottom: 4px;
+  }
+  .week-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .week-tab {
+    font-size: 15px;
+    font-weight: 900;
+    padding: 6px 16px;
+    border-radius: 999px;
+    border: 2.5px solid #eee;
+    background: white;
+    color: #999;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+  }
+  .week-tab.active {
+    background: #ff6b35;
+    color: white;
+    border-color: #ff6b35;
+  }
+
+  /* SONG */
+  .song-card { background: linear-gradient(135deg, #a29bfe, #6c5ce7); }
+  .song-card .card-title { color: white; }
+  .song-text {
+    font-size: 26px;
+    font-weight: 900;
+    color: white;
+    text-align: center;
+    padding: 16px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 18px;
+    margin-top: 4px;
+  }
+
+  /* FUN FACT */
+  .fact-card { background: linear-gradient(135deg, #55efc4, #00b894); }
+  .fact-card .card-title { color: white; }
+  .fact-content {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 18px;
+    padding: 16px;
+    margin-top: 4px;
+  }
+  .fact-emoji { font-size: 56px; flex-shrink: 0; }
+  .fact-text {
+    font-size: 19px;
+    font-weight: 700;
+    color: white;
+    line-height: 1.4;
+  }
+
+  /* BIG BUTTON */
+  .big-btn {
+    display: block;
+    width: 100%;
+    font-family: 'Nunito', sans-serif;
+    font-size: 20px;
+    font-weight: 900;
+    padding: 14px;
+    border-radius: 18px;
+    border: none;
+    cursor: pointer;
+    margin-top: 12px;
+    color: white;
+    background: rgba(255,255,255,0.3);
+    transition: transform 0.1s;
+  }
+  .big-btn:active { transform: scale(0.96); }
+
+  /* WORD */
+  .word-big {
+    font-size: 40px;
+    font-weight: 900;
+    color: #ff6b35;
+    text-align: center;
+    padding: 12px 0 6px;
+  }
+  .word-meaning {
+    font-size: 20px;
+    font-weight: 700;
+    color: #555;
+    text-align: center;
+    line-height: 1.4;
+    padding: 0 8px;
+  }
+
+  /* CHALLENGE */
+  .challenge-inner {
+    text-align: center;
+    padding: 8px 0;
+  }
+  .challenge-emoji { font-size: 70px; display: block; margin-bottom: 8px; }
+  .challenge-text {
+    font-size: 22px;
+    font-weight: 900;
+    color: #2a2a4a;
+    line-height: 1.4;
+  }
+  .challenge-card { background: linear-gradient(135deg, #ffeaa7, #fdcb6e); }
+  .challenge-card .card-title { color: #7a5c00; }
+  .challenge-card .challenge-text { color: #7a5c00; }
+  .challenge-card .big-btn { background: rgba(0,0,0,0.15); color: #7a5c00; }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 16px 0 8px;
+    font-size: 14px;
+    color: #ccc;
+    font-weight: 700;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="header">
+    <span class="header-bear">🐻</span>
+    <div class="header-name" id="greeting">Hei, Martin!</div>
+    <div class="header-date" id="dateStr">Laster...</div>
+  </div>
+
+  <!-- WEATHER -->
+  <div class="card weather-card">
+    <div class="card-header">
+      <div class="card-icon">🌤️</div>
+      <div class="card-title">Hvordan er det ute?</div>
+    </div>
+    <div class="weather-main">
+      <div>
+        <div class="weather-temp" id="tempVal">—°</div>
+        <div class="weather-desc" id="weatherDesc">Henter vær...</div>
+      </div>
+      <div class="weather-big-icon" id="weatherIcon">⏳</div>
+    </div>
+    <div class="tip-box" id="clothingTip">🔄 Henter klesråd...</div>
+  </div>
+
+  <!-- TODAY -->
+  <div class="card today-card" id="todayCard">
+    <div class="card-header">
+      <div class="card-icon">📅</div>
+      <div class="card-title" style="color:white;">I dag i barnehagen</div>
+    </div>
+    <div id="todayContent">
+      <div class="today-big">🔄 Laster...</div>
+    </div>
+  </div>
+
+  <!-- WEEK PLAN -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">🗓️</div>
+      <div class="card-title">Hele uken</div>
+    </div>
+    <div class="week-tabs" id="weekTabs"></div>
+    <div id="weekPlan"></div>
+    <div style="margin-top:14px; background:#fff3f0; border-radius:16px; padding:12px 14px; font-size:15px; font-weight:700; color:#c0392b; line-height:1.5;">
+      🌡️ Husk: Det kan skifte mellom varmt og kaldt! Smør på solkrem, ta med ullundertøy, regntøy og lett jakke.
+    </div>
+  </div>
+
+  <!-- SONG OF THE MONTH -->
+  <div class="card song-card">
+    <div class="card-header">
+      <div class="card-icon">🎵</div>
+      <div class="card-title">Månedssangen</div>
+    </div>
+    <div class="song-text">🎶 Fuglevise 🎶</div>
+  </div>
+
+  <!-- FUN FACT -->
+  <div class="card fact-card">
+    <div class="card-header">
+      <div class="card-icon">🤩</div>
+      <div class="card-title" style="color:white;">Visste du det?</div>
+    </div>
+    <div class="fact-content" id="factContent">
+      <div class="fact-emoji" id="factEmoji">🦒</div>
+      <div class="fact-text" id="factText">Laster...</div>
+    </div>
+    <button class="big-btn" onclick="nextFact()" style="background:rgba(255,255,255,0.3); color:white;">Neste fakta! ✨</button>
+  </div>
+
+  <!-- WORD OF THE DAY -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">🔤</div>
+      <div class="card-title">Dagens ord</div>
+    </div>
+    <div class="word-big" id="wordBig">...</div>
+    <div class="word-meaning" id="wordMeaning">...</div>
+    <button class="big-btn" onclick="nextWord()" style="background:#fff3f0; color:#ff6b35;">Nytt ord! 🔤</button>
+  </div>
+
+  <!-- CHALLENGE -->
+  <div class="card challenge-card">
+    <div class="card-header">
+      <div class="card-icon">🎯</div>
+      <div class="card-title">Dagens utfordring</div>
+    </div>
+    <div class="challenge-inner">
+      <span class="challenge-emoji" id="chalEmoji">🤸</span>
+      <div class="challenge-text" id="chalText">Laster...</div>
+    </div>
+    <button class="big-btn" onclick="nextChallenge()">Ny utfordring! 🎲</button>
+  </div>
+
+  <div class="footer">Laget med ❤️ for Martin 🐻</div>
+
+</div>
+<script>
+// DATE & GREETING
+const today = new Date();
+const dayNo = ['Søndag','Mandag','Tirsdag','Onsdag','Torsdag','Fredag','Lørdag'];
+const monthNo = ['januar','februar','mars','april','mai','juni','juli','august','september','oktober','november','desember'];
+const h = today.getHours();
+const greet = h < 10 ? 'God morgen, Martin! ☀️' : h < 12 ? 'Hei, Martin! 🌤️' : h < 17 ? 'Hei, Martin! 🌞' : 'God kveld, Martin! 🌙';
+document.getElementById('greeting').textContent = greet;
+document.getElementById('dateStr').textContent = dayNo[today.getDay()] + ' ' + today.getDate() + '. ' + monthNo[today.getMonth()];
+
+// WEATHER
+async function fetchWeather() {
+  try {
+    const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=59.9&longitude=10.63&current=temperature_2m,apparent_temperature,wind_speed_10m,weather_code&timezone=Europe%2FOslo');
+    const d = await r.json();
+    const c = d.current;
+    document.getElementById('tempVal').textContent = Math.round(c.temperature_2m) + '°';
+    const wc = c.weather_code;
+    let icon='☀️', desc='Kjempefint vær!';
+    if(wc===0){icon='☀️';desc='Strålende sol ute!';}
+    else if(wc<=2){icon='🌤️';desc='Litt skyer, men fint!';}
+    else if(wc<=3){icon='☁️';desc='Ganske overskyet.';}
+    else if(wc<=48){icon='🌫️';desc='Tåkete ute.';}
+    else if(wc<=57){icon='🌦️';desc='Litt yr og duskregn.';}
+    else if(wc<=67){icon='🌧️';desc='Det regner ute!';}
+    else if(wc<=77){icon='❄️';desc='Det snør! Så gøy!';}
+    else if(wc<=82){icon='🌦️';desc='Regnbyger.';}
+    else{icon='⛈️';desc='Tordenvær ute!';}
+    document.getElementById('weatherDesc').textContent = desc;
+    document.getElementById('weatherIcon').textContent = icon;
+    const temp = c.temperature_2m;
+    let tip='';
+    if(wc>=51) tip='☂️ Husk regnjakke og gummistøvler!';
+    else if(wc>=77) tip='❄️ Det snør! Ta på lue, votter og varm jakke!';
+    else if(temp<0) tip='🥶 Brrr – veldig kaldt! Ullundertøy, lue og votter!';
+    else if(temp<8) tip='🧤 Kaldt! Husk varm jakke og lue.';
+    else if(temp<14) tip='🧥 Ha med en mellomjakke.';
+    else tip='😎 Så fint! En tynn jakke holder!';
+    document.getElementById('clothingTip').textContent = tip;
+  } catch(e) {
+    document.getElementById('tempVal').textContent = '?°';
+    document.getElementById('weatherDesc').textContent = 'Sjekk yr.no!';
+    document.getElementById('weatherIcon').textContent = '🌡️';
+    document.getElementById('clothingTip').textContent = '📱 Sjekk yr.no for vær i dag!';
+  }
+}
+fetchWeather();
+
+// BARNEHAGE PLAN – Kr. Robin gruppe
+const bhgWeeks = {
+  '15': [
+    {day:'Man 6', text:'😴 Påskeferie – barnehagen er stengt!', closed:true},
+    {day:'Tir 7', text:'🎉 Gruppedag! Kr. Robin-gruppa er ute og feirer 6-årsdag!', group:'ute'},
+    {day:'Ons 8', text:'🏠 Vi leker inne. Språkgruppe!', group:'inne'},
+    {day:'Tor 9', text:'🏠 Vi leker inne. 🐟 Varm mat: Ovnsbakt torsk!', group:'inne'},
+    {day:'Fre 10', text:'🎉 Gruppedag! Kr. Robin er inne. 🍰 Kakesalg kl. 15–16:30!', group:'inne'},
+  ],
+  '16': [
+    {day:'Man 13', text:'🌿 Vi leker ute! Formingsaktivitet 🎨', group:'ute'},
+    {day:'Tir 14', text:'🎉 Gruppedag! Kr. Robin-gruppa er inne.', group:'inne'},
+    {day:'Ons 15', text:'🌿 Møtedag – vi leker ute. Språkgruppe!', group:'ute'},
+    {day:'Tor 16', text:'🔥 Turdag med bål i skogen! Ta med mat til bål og varm drikke.', group:'ute'},
+    {day:'Fre 17', text:'🎉 Gruppedag! Kr. Robin er inne.', group:'inne'},
+  ],
+  '17': [
+    {day:'Man 20', text:'🏠 Vi leker inne. Sosialkompetansesamling. Språkgruppe!', group:'inne'},
+    {day:'Tir 21', text:'🎉 Gruppedag! Kr. Robin er ute.', group:'ute'},
+    {day:'Ons 22', text:'🏠 Møtedag – vi leker inne.', group:'inne'},
+    {day:'Tor 23', text:'🎂 Vi feirer bursdag! Varm mat: Tomatsuppe med krutonger 🍅', group:'inne'},
+    {day:'Fre 24', text:'🏠 Vi leker inne.', group:'inne'},
+  ],
+  '18': [
+    {day:'Man 27', text:'🌿 Vi leker ute. Språkgruppe!', group:'ute'},
+    {day:'Tir 28', text:'🎉 Gruppedag! Kr. Robin er ute.', group:'ute'},
+    {day:'Ons 29', text:'🌿 Møtedag – vi leker ute.', group:'ute'},
+    {day:'Tor 30', text:'🧤 Rusken-markering! Alle leveres ute. Husk arbeidshansker!', group:'ute'},
+    {day:'Fre 1/5', text:'😴 Arbeidernes dag – barnehagen er stengt!', closed:true},
+  ]
+};
+
+const weekNums = Object.keys(bhgWeeks);
+const dayOfYear = d => Math.floor((d - new Date(d.getFullYear(),0,0))/864e5);
+const currentWN = Math.ceil(dayOfYear(today)/7);
+let curWeek = weekNums.includes(String(currentWN)) ? String(currentWN) : '16';
+
+function renderWeekTabs() {
+  document.getElementById('weekTabs').innerHTML = weekNums.map(w =>
+    `<button class="week-tab ${w===curWeek?'active':''}" onclick="setWeek('${w}')">Uke ${w}</button>`
+  ).join('');
+}
+function setWeek(w) { curWeek=w; renderWeekTabs(); renderWeekPlan(); renderToday(); }
+
+function renderWeekPlan() {
+  const plan = bhgWeeks[curWeek];
+  const td = today.getDate();
+  document.getElementById('weekPlan').innerHTML = plan.map(row => {
+    const isToday = row.day.includes(' '+td) && curWeek===String(currentWN);
+    return `<div class="week-day ${isToday?'today-row':''}">
+      <div class="week-day-name">${row.day.split(' ')[0]}</div>
+      <div>
+        ${row.closed ? '<div class="closed-badge">Stengt</div>' : ''}
+        <div class="week-day-text">${row.text}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderToday() {
+  const plan = bhgWeeks[curWeek];
+  const td = today.getDate();
+  const todayRow = plan.find(r => r.day.includes(' '+td));
+  const el = document.getElementById('todayContent');
+  if(!todayRow || curWeek !== String(currentWN)) {
+    el.innerHTML = `<div class="today-big">Se ukeplanen under! 👇</div>`;
+    return;
+  }
+  const groupIcon = todayRow.group === 'ute' ? '🌿 Ute i dag!' : todayRow.group === 'inne' ? '🏠 Inne i dag!' : '';
+  el.innerHTML = `
+    <div class="today-big">${todayRow.text}</div>
+    ${groupIcon ? `<div class="today-meta">${groupIcon}</div>` : ''}
+  `;
+}
+
+renderWeekTabs();
+renderWeekPlan();
+renderToday();
+
+// FUN FACTS
+const facts = [
+  {e:'🦒', t:'En sjiraff er like høy som 3 pappaer stablet oppå hverandre!'},
+  {e:'🐙', t:'En blekksprut har tre hjerter – og blått blod!'},
+  {e:'🦋', t:'En sommerfugl smaker med føttene sine!'},
+  {e:'🐘', t:'Elefanter husker venner de ikke har sett på 20 år!'},
+  {e:'🌈', t:'Et regnbue er egentlig en hel sirkel – vi ser bare halvparten!'},
+  {e:'🐝', t:'En bie besøker 1500 blomster for å lage én teskje honning!'},
+  {e:'⭐', t:'Det er flere stjerner i verdensrommet enn sandkorn på jorda!'},
+  {e:'🐬', t:'Delfiner sover med ett øye åpent!'},
+  {e:'🦊', t:'Rever kommuniserer med over 40 ulike lyder!'},
+  {e:'🌙', t:'Du kan se fotavtrykk fra månelandingen med et sterkt teleskop!'},
+];
+let fIdx = Math.floor(Math.random()*facts.length);
+function showFact() {
+  document.getElementById('factEmoji').textContent = facts[fIdx].e;
+  document.getElementById('factText').textContent = facts[fIdx].t;
+}
+function nextFact() { fIdx=(fIdx+1)%facts.length; showFact(); }
+showFact();
+
+// WORD OF THE DAY
+const words = [
+  {w:'Eventyr', m:'En magisk og spennende fortelling!'},
+  {w:'Modig', m:'Å gjøre noe selv om man er litt redd.'},
+  {w:'Snill', m:'Å være hyggelig og god mot andre.'},
+  {w:'Nysgjerrig', m:'Å ville lære og finne ut ting!'},
+  {w:'Kjempestor', m:'Veldig, veldig stor!'},
+  {w:'Blomst', m:'En vakker plante som lukter godt!'},
+  {w:'Vennskap', m:'Å ha en god venn som du er glad i.'},
+  {w:'Latter', m:'Den gøye lyden du lager når noe er morsomt!'},
+];
+let wIdx = today.getDay();
+function showWord() {
+  document.getElementById('wordBig').textContent = words[wIdx%words.length].w;
+  document.getElementById('wordMeaning').textContent = words[wIdx%words.length].m;
+}
+function nextWord() { wIdx=(wIdx+1)%words.length; showWord(); }
+showWord();
+
+// CHALLENGE
+const challenges = [
+  {e:'🤸', t:'Hopp på ett ben 10 ganger!'},
+  {e:'🎨', t:'Tegn favorittelskapet ditt!'},
+  {e:'🐸', t:'Hopp rundt som en frosk 5 ganger!'},
+  {e:'🌟', t:'Si noe hyggelig til noen i dag!'},
+  {e:'🎵', t:'Syng en sang du kan!'},
+  {e:'🌿', t:'Finn 3 ting fra naturen ute!'},
+  {e:'🐻', t:'Gå som en bjørn på alle fire rundt bordet!'},
+  {e:'🤗', t:'Gi noen en god klem i dag!'},
+];
+let cIdx = (today.getDay()+3)%challenges.length;
+function showChallenge() {
+  document.getElementById('chalEmoji').textContent = challenges[cIdx].e;
+  document.getElementById('chalText').textContent = challenges[cIdx].t;
+}
+function nextChallenge() { cIdx=(cIdx+1)%challenges.length; showChallenge(); }
+showChallenge();
+</script>
+</body>
+</html>
